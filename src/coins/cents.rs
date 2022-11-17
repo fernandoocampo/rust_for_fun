@@ -26,8 +26,10 @@ pub fn value_in_cents(coin: Coin) -> u8 {
 }
 
 pub fn plus_one(value: Option<i32>) -> Option<i32> {
-    match value {
-        None => None,
-        Some(i) => Some(i + 1),
-    }
+    // this block can be replaced for a simpler one.
+    // match value {
+    //     None => None,
+    //     Some(i) => Some(i + 1),
+    // }
+    value.map(|i| i + 1)
 }
