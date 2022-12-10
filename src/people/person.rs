@@ -1,20 +1,21 @@
 use std::io::{Error, ErrorKind};
 use std::str::FromStr;
+use serde::Serialize;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Person {
     pub id: PersonID,
     pub name: String,
 }
-
-#[derive(Debug)]
-pub struct PersonID(String);
 
 impl Person {
     pub fn new(id: PersonID, name: String) -> Self {
         Person { id, name }
     }
 }
+
+#[derive(Debug, Serialize)]
+pub struct PersonID(pub String);
 
 impl FromStr for PersonID {
     type Err = std::io::Error;
