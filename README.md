@@ -4,6 +4,15 @@ this is a repository to learn Rust.
 
 ## HTTP server
 
+0. start server just running
+
+```sh
+➜  rust_for_fun git:(main) cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.37s
+     Running `target/debug/rust_for_fun`
+> Hello, starting on 1337
+```
+
 1. GET people
 
 ```sh
@@ -36,3 +45,17 @@ curl -X OPTIONS localhost:1337/people -H "Access-Control-Request-Method: PUT" -H
 <
 * Connection #0 to host localhost left intact
 ```
+
+3. POST people
+
+to add a person run the following command
+
+```sh
+curl --location --request POST 'http://localhost:1337/people' \
+--header 'content-type: application/json' \
+--data '{ "id": "3", "name": "aebutius" }'
+
+People added
+```
+
+curl -X POST http://localhost:1337/people --header 'Content-Type: application/json' --data '{ "name": "aebutius" }'
