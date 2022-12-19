@@ -1,4 +1,4 @@
-use crate::people::person::{Pagination, Person, Store};
+use crate::people::person::{Pagination, Person, PersonID, Store};
 use std::{collections::HashMap, fmt, fmt::Display, fmt::Formatter, num::ParseIntError};
 use warp::{
     filters::{body::BodyDeserializeError, cors::CorsForbidden},
@@ -11,6 +11,7 @@ use warp::{
 pub enum Error {
     ParseError(ParseIntError),
     MissingParameters,
+    PersonNotFound,
 }
 
 impl Reject for Error {}
@@ -20,6 +21,7 @@ impl Display for Error {
         match *self {
             Error::ParseError(ref err) => write!(f, "Cannot parse parameter: {}", err),
             Error::MissingParameters => write!(f, "Missing parameter"),
+            Error::PersonNotFound => write!(f, "Person not found"),
         }
     }
 }
@@ -60,6 +62,19 @@ pub async fn get_people(
     let res = &res[pagination.start..pagination.end];
 
     Ok(warp::reply::json(&res))
+}
+
+pub async fn update_person(
+    id: String,
+    store: Store,
+    person: Person,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    match store.people.write().await.get_mut(&PersonID(id)) {
+        Some(p) => *p = person,
+        None => return Err(warp::reject::custom(Error::PersonNotFound)),
+    }
+
+    Ok(warp::reply::with_status("Person updated", StatusCode::OK))
 }
 
 pub async fn add_person(store: Store, person: Person) -> Result<impl warp::Reply, warp::Rejection> {

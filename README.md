@@ -6,7 +6,7 @@ this is a repository to learn Rust.
 
 0. start server just running
 
-```sh
+```shell
 ➜  rust_for_fun git:(main) cargo run
     Finished dev [unoptimized + debuginfo] target(s) in 0.37s
      Running `target/debug/rust_for_fun`
@@ -15,14 +15,14 @@ this is a repository to learn Rust.
 
 1. GET people
 
-```sh
+```shell
 ➜  ~ curl http://localhost:1337/people
 {"id":"1","name":"Fernando"}
 ```
 
 2. OPTIONS people
 
-```sh
+```shell
 curl -X OPTIONS localhost:1337/people -H "Access-Control-Request-Method: PUT" -H "Access-Control-Request-Headers: content-type" -H "Origin: https://not-origin.io" --verbose
 
 *   Trying 127.0.0.1:1337...
@@ -50,12 +50,18 @@ curl -X OPTIONS localhost:1337/people -H "Access-Control-Request-Method: PUT" -H
 
 to add a person run the following command
 
-```sh
+```shell
 curl --location --request POST 'http://localhost:1337/people' \
 --header 'content-type: application/json' \
 --data '{ "id": "3", "name": "aebutius" }'
-
-People added
 ```
 
-curl -X POST http://localhost:1337/people --header 'Content-Type: application/json' --data '{ "name": "aebutius" }'
+4. PUT people
+
+to update an existing person run the following command
+
+```shell
+curl --location --request PUT 'http://localhost:1337/people/1' \
+--header 'Content-Type: application/json' \
+--data '{"id": "1", "name": "Luisfer" }'
+```

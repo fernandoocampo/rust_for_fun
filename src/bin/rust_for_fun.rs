@@ -31,8 +31,17 @@ async fn main() {
         .and(warp::body::json())
         .and_then(handler::add_person);
 
+    let update_people = warp::put()
+        .and(warp::path("people"))
+        .and(warp::path::param::<String>())
+        .and(warp::path::end())
+        .and(store_filter.clone())
+        .and(warp::body::json())
+        .and_then(handler::update_person);
+
     let routes = get_people
         .or(add_people)
+        .or(update_people)
         .with(cors)
         .recover(handler::return_error);
 
