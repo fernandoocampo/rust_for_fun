@@ -15,7 +15,7 @@ async fn main() {
         .allow_methods(&[Method::PUT, Method::DELETE, Method::GET, Method::POST]);
 
     let hello_greeting = hello();
-    println!("> {}, starting server on 1337", hello_greeting);
+    println!("> {hello_greeting}, starting server on 1337");
 
     let get_people = warp::get()
         .and(warp::path("people"))
@@ -39,9 +39,17 @@ async fn main() {
         .and(warp::body::json())
         .and_then(handler::update_person);
 
+    let delete_people = warp::delete()
+        .and(warp::path("people"))
+        .and(warp::path::param::<String>())
+        .and(warp::path::end())
+        .and(store_filter.clone())
+        .and_then(handler::delete_person);
+
     let routes = get_people
         .or(add_people)
         .or(update_people)
+        .or(delete_people)
         .with(cors)
         .recover(handler::return_error);
 

@@ -83,6 +83,13 @@ pub async fn add_person(store: Store, person: Person) -> Result<impl warp::Reply
     Ok(warp::reply::with_status("People added", StatusCode::OK))
 }
 
+pub async fn delete_person(id: String, store: Store) -> Result<impl warp::Reply, warp::Rejection> {
+    match store.people.write().await.remove(&PersonID(id)) {
+        Some(_) => Ok(warp::reply::with_status("Person deleted", StatusCode::OK)),
+        None => Err(warp::reject::custom(Error::PersonNotFound)),
+    }
+}
+
 pub async fn return_error(r: Rejection) -> Result<impl Reply, Rejection> {
     if let Some(error) = r.find::<Error>() {
         Ok(warp::reply::with_status(

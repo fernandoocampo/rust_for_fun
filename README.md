@@ -46,7 +46,7 @@ curl -X OPTIONS localhost:1337/people -H "Access-Control-Request-Method: PUT" -H
 * Connection #0 to host localhost left intact
 ```
 
-3. POST people
+3. ADD people
 
 to add a person run the following command
 
@@ -56,12 +56,20 @@ curl --location --request POST 'http://localhost:1337/people' \
 --data '{ "id": "3", "name": "aebutius" }'
 ```
 
-4. PUT people
+4. UPDATE people
 
 to update an existing person run the following command
 
 ```shell
-curl --location --request PUT 'http://localhost:1337/people/1' \
+curl --location --request PUT 'http://localhost:1337/people/3' \
 --header 'Content-Type: application/json' \
---data '{"id": "1", "name": "Luisfer" }'
+--data '{"id": "3", "name": "Aebetius" }'
+```
+
+5. DELETE people
+
+to delete an existing person run the following command
+
+```shell
+curl --localtion --request DELETE 'http://localhost:1337/people/2
 ```
