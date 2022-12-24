@@ -24,6 +24,13 @@ async fn main() {
         .and(store_filter.clone())
         .and_then(handler::get_people);
 
+    let get_person = warp::get()
+        .and(warp::path("people"))
+        .and(warp::path::param::<String>())
+        .and(warp::path::end())
+        .and(store_filter.clone())
+        .and_then(handler::get_person);
+
     let add_people = warp::post()
         .and(warp::path("people"))
         .and(warp::path::end())
@@ -47,6 +54,7 @@ async fn main() {
         .and_then(handler::delete_person);
 
     let routes = get_people
+        .or(get_person)
         .or(add_people)
         .or(update_people)
         .or(delete_people)

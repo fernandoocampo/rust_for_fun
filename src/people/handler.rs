@@ -64,6 +64,13 @@ pub async fn get_people(
     Ok(warp::reply::json(&res))
 }
 
+pub async fn get_person(id: String, store: Store) -> Result<impl warp::Reply, warp::Rejection> {
+    match store.people.write().await.get_mut(&PersonID(id)) {
+        Some(p) => Ok(warp::reply::json(&p)),
+        None => Err(warp::reject::custom(Error::PersonNotFound)),
+    }
+}
+
 pub async fn update_person(
     id: String,
     store: Store,
