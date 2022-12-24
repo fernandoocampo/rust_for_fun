@@ -19,7 +19,7 @@ impl Reject for Error {}
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         match *self {
-            Error::ParseError(ref err) => write!(f, "Cannot parse parameter: {}", err),
+            Error::ParseError(ref err) => write!(f, "Cannot parse parameter: {err}"),
             Error::MissingParameters => write!(f, "Missing parameter"),
             Error::PersonNotFound => write!(f, "Person not found"),
         }

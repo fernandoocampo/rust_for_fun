@@ -1,5 +1,6 @@
 fmt:
 	cargo fmt
-linter:
+lint-fmt:
 	cargo fmt --all --check
-	cargo clippy
+lint-clippy:
+	cargo clippy -- -D warnings
