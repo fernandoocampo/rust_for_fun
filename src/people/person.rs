@@ -14,6 +14,16 @@ pub struct Pagination {
     pub end: usize,
 }
 
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq, Hash)]
+pub struct PetID(pub String);
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Pet {
+    pub id: PetID,
+    pub name: String,
+    pub person_id: PersonID,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Person {
     pub id: PersonID,
@@ -43,12 +53,14 @@ impl FromStr for PersonID {
 #[derive(Debug, Clone)]
 pub struct Store {
     pub people: Arc<RwLock<HashMap<PersonID, Person>>>,
+    pub pets: Arc<RwLock<HashMap<PetID, Pet>>>,
 }
 
 impl Store {
     pub fn new() -> Self {
         Store {
             people: Arc::new(RwLock::new(Self::init())),
+            pets: Arc::new(RwLock::new(HashMap::new())),
         }
     }
 

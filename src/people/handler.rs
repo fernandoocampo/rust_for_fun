@@ -1,4 +1,4 @@
-use crate::people::person::{Pagination, Person, PersonID, Store};
+use crate::people::person::{Pagination, Person, PersonID, Pet, PetID, Store};
 use std::{collections::HashMap, fmt, fmt::Display, fmt::Formatter, num::ParseIntError};
 use warp::{
     filters::{body::BodyDeserializeError, cors::CorsForbidden},
@@ -95,6 +95,21 @@ pub async fn delete_person(id: String, store: Store) -> Result<impl warp::Reply,
         Some(_) => Ok(warp::reply::with_status("Person deleted", StatusCode::OK)),
         None => Err(warp::reject::custom(Error::PersonNotFound)),
     }
+}
+
+pub async fn add_pet(
+    store: Store,
+    params: HashMap<String, String>,
+) -> Result<impl warp::Reply, warp::Rejection> {
+    let pet = Pet {
+        id: PetID("1".to_string()),
+        name: params.get("name").unwrap().to_string(),
+        person_id: PersonID(params.get("personID").unwrap().to_string()),
+    };
+
+    store.pets.write().await.insert(pet.id.clone(), pet);
+
+    Ok(warp::reply::with_status("Pet Added", StatusCode::OK))
 }
 
 pub async fn return_error(r: Rejection) -> Result<impl Reply, Rejection> {

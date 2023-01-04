@@ -53,10 +53,19 @@ async fn main() {
         .and(store_filter.clone())
         .and_then(handler::delete_person);
 
+    // Pet part
+    let add_pet = warp::post()
+        .and(warp::path("pets"))
+        .and(warp::path::end())
+        .and(store_filter.clone())
+        .and(warp::body::form())
+        .and_then(handler::add_pet);
+
     let routes = get_people
         .or(get_person)
         .or(add_people)
         .or(update_people)
+        .or(add_pet)
         .or(delete_people)
         .with(cors)
         .recover(handler::return_error);

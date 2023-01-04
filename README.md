@@ -73,3 +73,14 @@ to delete an existing person run the following command
 ```shell
 curl --localtion --request DELETE 'http://localhost:1337/people/2
 ```
+
+6. ADD pet
+
+to add a pet using data-urlencode parameters
+
+```shell
+curl --location --request POST 'http://localhost:1337/pets' \
+--header 'content-type: application/x-www-form-urlencoded' \
+--data-urlencode 'name=ivana' \
+--data-urlencode 'personID=1'
+```
