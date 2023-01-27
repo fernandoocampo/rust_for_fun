@@ -71,7 +71,7 @@ curl --location --request PUT 'http://localhost:1337/people/3' \
 to delete an existing person run the following command
 
 ```shell
-curl --localtion --request DELETE 'http://localhost:1337/people/2
+curl --location --request DELETE 'http://localhost:1337/people/2'
 ```
 
 6. ADD pet

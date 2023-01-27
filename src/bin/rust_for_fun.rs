@@ -1,12 +1,14 @@
 extern crate rust_for_fun;
 
+use rust_for_fun::error::app;
 use rust_for_fun::greetings::hi::hello;
-use rust_for_fun::people::{handler, person};
+use rust_for_fun::store::{memory};
+use rust_for_fun::people::{handler};
 use warp::{http::Method, Filter};
 
 #[tokio::main]
 async fn main() {
-    let store = person::Store::new();
+    let store = memory::Store::new();
     let store_filter = warp::any().map(move || store.clone());
 
     let cors = warp::cors()
@@ -68,7 +70,7 @@ async fn main() {
         .or(add_pet)
         .or(delete_people)
         .with(cors)
-        .recover(handler::return_error);
+        .recover(app::return_error);
 
     warp::serve(routes).run(([127, 0, 0, 1], 1337)).await;
     println!("ending server");
